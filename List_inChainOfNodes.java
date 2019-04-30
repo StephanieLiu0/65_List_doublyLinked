@@ -29,18 +29,38 @@ public class List_inChainOfNodes{
     }
 
 
-     /**
-       @return a string representation of this list,
-       format:
-           # elements [element0,element1,element2,]
-      */
-    public String toString() {
-        String stringRep = size() + " elements [";
+    //  /**
+    //    @return a string representation of this list,
+    //    format:
+    //        # elements [element0,element1,element2,]
+    //   */
+    // public String toString() {
+    //     String stringRep = size() + " elements [";
 
-        for( Node node = headSentinel.getNextNode()
-           ; node != null
-           ; node = node.getNextNode() )
-            stringRep += node.getCargo() + ",";
+    //     for( Node node = headSentinel.getNextNode()
+    //        ; node != null
+    //        ; node = node.getNextNode() )
+    //         stringRep += node.getCargo() + ",";
+    //     return stringRep + "]";
+    // }
+
+    
+    /**
+      Demo use of links to previous Nodes.
+
+      @return a string representation of this list,
+              iterating through the list
+              from tail to head.
+      format, using ` as separator
+          [element0`element1`element2`]
+     */
+    public String toString() {
+        String stringRep = "tail-first [";
+
+        for( Node node = getNodeBefore( size())
+		 ; node != headSentinel
+		 ; node = node.getPrevNode() )
+            stringRep += node.getCargo() + "`";
         return stringRep + "]";
     }
 
@@ -52,7 +72,7 @@ public class List_inChainOfNodes{
      */
      public boolean addAsHead( Object val) {
         headSentinel.setNextNode(
-          new Node( val, headSentinel.getNextNode()));
+            new Node( val, headSentinel.getNextNode(), headSentinel));
         return true;
      }
 
@@ -115,11 +135,13 @@ public class List_inChainOfNodes{
       (that is, increase the index associated with each).
      */
     public boolean add( int index, Object value) {
-        Node newNode = new Node( value);
+	Node beforeNew = getNodeBefore( index);
+        Node newNode = new Node( value, null, beforeNew);
         Node afterNew = /* the node that should follow newNode
           in the augmented list */
           getNodeBefore( index).setNextNode( newNode);
         newNode.setNextNode( afterNew);
+        newNode.setPrevNode( beforeNew);
         return true;
     }
 
