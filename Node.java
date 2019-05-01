@@ -20,7 +20,7 @@ public class Node {
         this( cargo);
         this.nextNode = nextNode;
     }
-    public Node( Object cargo, Node nextNode, Node prevNode) {
+    public Node(  Node prevNode, Object cargo, Node nextNode) {
         this( cargo, nextNode);
         this.prevNode = prevNode;
     }
